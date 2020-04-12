@@ -1,0 +1,3 @@
+# question
+## Predefined named character entities 我对这段话不太了解，预定义的命名字符实体的作用之类的，可以举个简单的例子吗？
+ This allows some characters that are needed for the core syntax of HTML or XML themselves to be escaped from their special syntactic role (notably "&" which is reserved for beginning entity references, "<" or ">" which delimit the markup tags, and "double" or 'single' quotation marks, which delimit the values of attributes and entity definitions).
