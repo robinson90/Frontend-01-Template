@@ -8,15 +8,21 @@
 // NumericLiteral 
 // 写一个正则匹配所有Number直接量
 
-const HexDigitReg = /[0-9A-Fa-f]/
-const HexIntegerLiteralReg = /(0x|0X)[0-9A-Fa-f]+/
-const SignedIntegerReg = /(+|-)DecimalDigitsReg/
-const ExponentIndicatorReg = /(e|E)/
-const ExponentPartReg = /(e|E)SignedIntegerReg/
-const NonZeroDigitReg = /[1-9]/
-const DecimalDigitReg = /[0-9]/
-const DecimalDigitsReg = /[0-9]+/
-const DecimalIntegerLiteralReg = /(0|[1-9]DecimalDigitsoptReg)/
-const DecimalLiteralReg = /(DecimalIntegerLiteralReg.DecimalDigitsopt ExponentPartopt |. DecimalDigits ExponentPartopt|DecimalIntegerLiteral ExponentPartopt)/
+const HexDigit = /[0-9A-Fa-f]/
+const HexIntegerLiteral = /0[xX][0-9A-Fa-f]+/
+const SignedInteger = /[+-]*[0-9]+/
+const ExponentIndicator = /[eE]/
+// ExponentPart :: ExponentIndicator SignedInteger 
+const ExponentPart = /[eE][+-]*[0-9]+/;
+const NonZeroDigit = /[1-9]/
+const DecimalDigit = /[0-9]/
+const DecimalDigits = /[0-9]+/ //DecimalDigits :: DecimalDigit |DecimalDigits DecimalDigit 
+const DecimalIntegerLiteral = /(0|[1-9][0-9]*)/
+// const DecimalLiteral = /(DecimalIntegerLiteral.DecimalDigits* ExponentPart* |. DecimalDigits ExponentPart*|DecimalIntegerLiteral ExponentPart*)/
+const DecimalLiteral = /((0|[1-9][0-9]*).[0-9]* ([eE][+-]*[0-9]+)* |.[0-9]+([eE][+-]*[0-9]+)*|(0|[1-9][0-9]*)([eE][+-]*[0-9]+)*)/
 
-const NumericLiteralReg = /(DecimalLiteral|HexIntegerLiteral)/
+// const NumericLiteral = /(DecimalLiteral|HexIntegerLiteral)/
+const NumericLiteral = /(((0|[1-9][0-9]*).[0-9]* ([eE][+-]*[0-9]+)* |.[0-9]+([eE][+-]*[0-9]+)*|(0|[1-9][0-9]*)([eE][+-]*[0-9]+)*)|0[xX][0-9A-Fa-f]+)/
+
+console.log(NumericLiteral.test(0x78A))
+console.log(NumericLiteral.test(.6))
