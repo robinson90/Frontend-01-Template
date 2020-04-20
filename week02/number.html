@@ -1,0 +1,23 @@
+<script>
+  const a = 0.1;
+  const b = 0.2;
+  const mem = new Float64Array(1);
+  mem[0] = a;
+  console.log(mem)
+
+  const intarr = new Uint8Array(mem.buffer)
+
+  for (let i = 0; i < 8; i ++) {
+    console.log(intarr[i].toString(2).padStart('0'))
+  }
+  console.log(intarr)
+// 词法优先原则
+  console.log(97 .toString(2))
+
+  // const num1 = 1;
+  // const num2 = new Number(2)
+  // console.log(Object.prototype.toString(num1))
+  // console.log(typeof(num1))
+  // console.log(Object.prototype.toString(num2))
+  // console.log(typeof(num2))
+</script>
