@@ -1,7 +1,3 @@
-function UTF8_Encoding () {
-
-}
-
 //匹配字符串字面量
 
 const StringLiteral = /('SingleStringCharactersopt'|"DoubleStringCharactersopt")/
