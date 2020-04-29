@@ -1,0 +1,1 @@
+ The value of the "length" property is numerically greater than the name of every own property whose name is an array index; whenever an own property of an Array object is created or changed, other properties are adjusted as necessary to maintain this invariant.

@@ -39,9 +39,45 @@
   ``` 
   * BoundFunctionCreate
 * Array Exotic Objects
+  * the "length" property
+  ```
+  const a = []
+  console.log(a.length)
+  a.push(3)
+  a.push(4)
+  console.log(a.length)
+  console.log(a)
+  a[100]
+  console.log(a.length)
+  console.log(a)
+  a.length = 100;
+  console.log(a)
+  a["1"] === a[1]
+
+  ```
+
+  *  [[DefineOwnProperty]]
+  * ArrayCreate
+  ```
+  var b = new Array(-1) // Uncaught RangeError: Invalid array length
+  var b = new Array(3)
+  ```
+  * ArraySpeciesCreate
+  ```
+    a.splice
+
+  ```
+  * ArraySetLength
+
+
 
 ## 词汇
 except for: 除了
 explicitly: 明确地
 specified: 指定的
 otherwise: 除此以外
+nonnegative：非负的
+constraint: 约束
+derived: 派生的
+intrinsic: 固有
+absent: 缺失
