@@ -14,3 +14,7 @@ function numberToString (number, x = 10) {
 
 console.log(numberToString(345.907))
 
+var foo = function (a,b) {
+  console.log(Object.prototype.toString(a))
+  console.log(arguments)
+}

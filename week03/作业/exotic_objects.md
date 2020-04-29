@@ -68,8 +68,17 @@
 
   ```
   * ArraySetLength
+* String Exotic Objects
+  * [[GetOwnProperty]] 
+  * [[DefineOwnProperty]]
+  * [[OwnPropertyKeys]] 
+  * StringCreate
+  * StringGetOwnProperty
 
-
+Arguments Exotic Objects
+Integer-Indexed Exotic Objects 
+Module Namespace Exotic Objects 
+Immutable Prototype Exotic Objects 
 
 ## 词汇
 except for: 除了
@@ -81,3 +90,7 @@ constraint: 约束
 derived: 派生的
 intrinsic: 固有
 absent: 缺失
+
+encapsulates：封装
+exposes: 暴露
+corresponding: 相应
