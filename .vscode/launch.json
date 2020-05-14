@@ -5,6 +5,24 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch abababx",
+      "program": "${workspaceFolder}/week06/work/abababx.js",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Pattern",
+      "program": "${workspaceFolder}/week06/work/pattern.js",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
       "type": "chrome",
       "request": "launch",
       "name": "Launch Chrome against localhost",
