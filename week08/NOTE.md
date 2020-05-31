@@ -49,3 +49,5 @@ https://www.w3.org/TR/2018/CR-css-flexbox-1-20181119/#flex-items
 * block-container 表示可以容纳 bfc
 * block-box = block-level + block-container
 * block-box 如果 overflow 是 visible， 那么就跟父 bfc 合并
+
+[Comparing Block](http://www.plccenter.cn/Siemens_Step7/bas00235.htm)
