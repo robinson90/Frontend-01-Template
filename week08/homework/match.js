@@ -11,30 +11,27 @@ function emit (cur) {
   switch (cur.type) {
     case 'descendant': {
       const ancestor = Object.assign({}, selectorObj)
+      console.log(ancestor)
       selectorObj = {
         ancestor,
       }
       break;
     }
     case 'children': {
-      const parent = Object.assign({}, selectorObj)
+      const parentNode = Object.assign({}, selectorObj)
       selectorObj = {
-        parent,
+        parentNode,
       };
       break;
     }
     case 'next': {
-      const previous = Object.assign({}, selectorObj)
-      selectorObj = {
-        previous,
-      };
+      selectorObj.previousElementSibling = {};
+      selectorObj.previousElementSibling[cur.type] = cur.val;
       break;
     }
     case 'after': {
-      const before = Object.assign({}, selectorObj)
-      selectorObj = {
-        before,
-      };
+      selectorObj.before = {};
+      selectorObj.before[cur.type] = cur.val;
       break;
     }
     default: {
@@ -42,22 +39,24 @@ function emit (cur) {
       break;
     }
   }
-  console.log('selectorObj', selectorObj)
+  // console.log('selectorObj', selectorObj)
 }
 
 function dealSelector(char, isEmit = false) {
   switch (char) {
     case ' ': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
       cur.val = '';
       cur.type = 'descendant'
+      emit(cur)
+      delete cur.type;
       break;
     }
     case '>': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
@@ -66,7 +65,7 @@ function dealSelector(char, isEmit = false) {
       break;
     }
     case '+': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
@@ -75,7 +74,7 @@ function dealSelector(char, isEmit = false) {
       break;
     }
     case '~': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
@@ -84,7 +83,7 @@ function dealSelector(char, isEmit = false) {
       break;
     }
     case ':': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
@@ -93,16 +92,16 @@ function dealSelector(char, isEmit = false) {
       break;
     }
     case '.': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
       cur.val = '';
-      cur.type = 'class';
+      cur.type = 'className';
       break;
     }
     case '#': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
@@ -111,12 +110,12 @@ function dealSelector(char, isEmit = false) {
       break;
     }
     case '[': {
-      if (Object.keys(cur)[1]) {
+      if (Object.keys(cur)[1] && cur.val !== '') {
         emit(cur)
         delete cur.type;
       }
       cur.val = '';
-      cur.type = 'attr'
+      cur.type = 'attributes'
       break;
     }
     case ']': {
@@ -135,7 +134,7 @@ function dealSelector(char, isEmit = false) {
       if (cur.type) {
         cur.val += char
       } else {
-        cur.type = 'tag'
+        cur.type = 'tagName'
         cur.val += char;
       }
       if (isEmit) {
@@ -146,15 +145,57 @@ function dealSelector(char, isEmit = false) {
   }
 }
 
+function compare(selectorObj, element, isDescendant = false) {
+  console.dir(element)
+  let i = 0;
+  for (let key of Object.keys(selectorObj)) {
+    console.log(key)
+    if (typeof(selectorObj[key]) !== 'object') {
+      console.log(selectorObj[key])
+      if (key === 'tagName') {
+        if (selectorObj[key].toUpperCase() !== element[key]) {
+          if (isDescendant && 'HTML' !== element.tagName) {
+            return compare(selectorObj, element['parentNode'], true)
+          }
+          return false
+        }
+      } else if (selectorObj[key] !== element[key]) {
+        if (isDescendant && 'HTML' !== element.tagName) {
+          return compare(selectorObj, element['parentNode'], true)
+        }
+        return false
+      }
+    } else {
+      i ++;
+      if (key === 'ancestor') {
+        return compare(selectorObj[key], element['parentNode'], true)
+      } else {
+        return compare(selectorObj[key], element[key])
+      }
+    }
+  }
+  if (i === 0) {
+    return true;
+  }
+  if (isDescendant && 'HTML' !== element.tagName) {
+    return compare(selectorObj, element['parentNode'], true)
+  }
+}
+
 function match(selector, element) {
+  console.dir(element)
   for(let i = 0; i < selector.length; i++) {
     dealSelector(selector[i], i === selector.length - 1)
   }
   console.log(selectorObj)
-  return true;
+  console.log(compare(selectorObj, element))
 }
 
-match("div #id.class+p~span", document.getElementById("id"));
-match("div div>#id.class", document.getElementById("id"));
-match("div div>#id.class+p", document.getElementById("id"));
-match("div div>#id.class+p~span", document.getElementById("id"));
+match("body div #id.class", document.getElementById("id"));
+// match("body #id.class", document.getElementById("id"));
+// match("div #id.class", document.getElementById("id"));
+// match("div>#id.class", document.getElementById("id"));
+// match("div #id.class+p~span", document.getElementById("id"));
+// match("div div>#id.class", document.getElementById("id"));
+// match("div div>#id.class+p", document.getElementById("id"));
+// match("div div>#id.class+p~span", document.getElementById("id"));
