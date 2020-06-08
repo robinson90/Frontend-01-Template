@@ -10,3 +10,30 @@
 
 * [链接](https://pan.baidu.com/s/12fo1ph3y6ebv0nA5NxXdsQ)
 * 提取码：ryz8
+
+# 2. 重学HTML | HTML语言与扩展
+
+## 参考链接：
+* https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd
+* http://static001.geekbang.org/static/time/quote/World_Wide_Web-Wikipedia.html
+## 随堂练习：
+实践：为 wiki 编写 HTML
+## 答疑回放：
+* 链接： https://pan.baidu.com/s/1qsmODnHQGN66zGNUGCunvw
+* 提取码：tn7z
+
+# 3. 重学HTML | HTML语义
+
+## 参考链接：
+* https://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd
+* http://static001.geekbang.org/static/time/quote/World_Wide_Web-Wikipedia.html
+## 答疑回放：
+* 链接： https://pan.baidu.com/s/1RgcNhuQZhLwfm5PMCIueQQ
+* 提取码：0ebl
+
+# 4. 重学浏览器API | DOM API，事件机制
+## 参考链接：
+* https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+## 答疑回放：
+* 链接： https://pan.baidu.com/s/1BXg6C1xZKdOM-7O1yTSb3g
+* 提取码：bawk
