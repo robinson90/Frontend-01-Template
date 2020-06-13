@@ -1,0 +1,32 @@
+<head>
+  <link  rel="stylesheet" href="data:text/css;base64,ZGl2e2NvbG9yOiByZWQ7fQ=="/>
+  <link rel="stylesheet" title="x" href="data:text/css,p%7Bcolor:blue%7D">
+  <style>
+    #id{
+      border: burlywood 1px solid;
+    }
+    /* div{
+      color: red;
+    } */
+  </style>
+</head>
+<div id="id">
+  <div>1</div>
+  <div>2</div>
+  <div>3</div>
+  <div>4</div>
+  <div>5</div>
+</div>
+<p>ghj</p>
+<script>
+  function reverseChildren(element) {
+    const children = element.children
+    
+    let l = children.length
+    while(l-- > 0) {
+      element.appendChild(children[l])
+    }
+  }
+reverseChildren(document.getElementById('id'))
+
+</script>

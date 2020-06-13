@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #div{
+      display: flex;
+      height: 600px;
+      width: 600px;
+      border: red 1px solid;
+      flex-wrap: wrap;
+    }
+    span{
+      width: 200px;
+      height: 200px;
+      box-sizing: border-box;
+      background-color: seagreen;
+      color: red;
+      border:#fff 1px solid;
+      font-size: 60px;
+      font-weight: 900;
+      text-align: center;
+      line-height: 200px;
+      vertical-align: middle;
+    }
+  </style>
+</head>
+<body>
+  <div id="div"></div>
+</body>
+<script>
+  const data = [
+    [0, 0, 0],
+    [0, 0, 0],
+    [0, 0 ,0]
+  ]
+  let color = 1;
+  function show() {
+    const div = document.getElementById('div')
+    div.innerHTML = ''
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < data[i].length; j ++) {
+        const span = document.createElement('span')
+        let text = '';
+        if (data[i][j] === 1) {
+          text = 'x';
+        } 
+        if (data[i][j] === 2) {
+          text = 'o'
+        }
+        span.addEventListener("click",() => {
+          move(i, j)
+        })
+        span.innerHTML = text
+        div.appendChild(span)
+      }
+    }
+  }
+  function move(x, y) {
+    if (data[x][y] === 0) {
+      data[x][y] = color;
+      show()
+      console.log(check(data, color))
+      if (check(data, color)) {
+        alert(`${colr}win`)
+      }
+      color = 3 - color;
+    }
+    return;
+  }
+  function check (data, color) {
+    console.log(data,color)
+    for(let i = 0; i < data.length; i ++) {
+      let win = true;
+      for(let j = 0; j < data[i].length; j ++) {
+        if (color !== data[i, j]) {
+          win = false;
+          break;
+        }
+      }
+      if (win) {
+        return true;
+      }
+    }
+    for(let i = 0; i < data[0].length; i ++) {
+      let win = true;
+      for(let j = 0; j < data.length; j ++) {
+        if (color !== data[j, i]) {
+          win = false;
+          break;
+        }
+      }
+      if (win) {
+        return true;
+      }
+    }
+    {
+      let win = true;
+      for(let i = 0; i < data.length; i ++) {
+        if (color !== data[i, i]) {
+            win = false;
+            break;
+          }
+        }
+      if (win) {
+        return true;
+      }
+    }
+    {
+      let win = true;
+      for(let i = 0; i < data.length; i ++) {
+        if (color !== data[i, 2 - i]) {
+            win = false;
+            break;
+          }
+      }
+      if (win) {
+        return true;
+      }
+    }
+    return false
+  }
+  show()
+</script>
+</html>
