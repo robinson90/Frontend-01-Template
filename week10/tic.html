@@ -80,6 +80,17 @@
     return;
   }
 
+  function computerMove() {
+    const {
+      point,
+    } = bestChoice(data, color)
+    if (point) {
+      data[point[0]][point[1]] = color;
+      show();
+      color = 3 - color;
+    }
+  }
+
   function clone () {
     return JSON.parse(JSON.stringify(data))
   }
