@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    .light{
+      background-color: gray;
+      width: 100px;
+      height: 100px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .red.light{
+      background-color: red;
+    }
+    .green.light{
+      background-color: green;
+    }
+    .yellow.light{
+      background-color: yellow;
+    }
+  </style>
+</head>
+<body>
+  <div>
+    <div class="light"></div>
+    <div class="light"></div>
+    <div class="light"></div>
+  </div>
+</body>
+<script>
+  // 业务逻辑和时序控制逻辑分开
+  const lig = document.getElementsByClassName('light')
+  function sleep (t) {
+    return new Promise((resolve, reject) => {
+      setTimeout(resolve, t)
+    })
+  }
+  console.log(lig)
+  function color (color, index) {
+    for(let i = 0; i < lig.length; i++) {
+      lig[i].setAttribute('class', 'light')
+    }
+    lig[index].setAttribute('class', `${color} light`)
+  }
+  async function light () {
+    while(true) {
+      await sleep(5)
+      color('red', 1)
+      await sleep(10)
+      color('green', 0)
+      await sleep(2)
+      color('yellow', 2)
+    }
+  }
+  light()
+</script>
+</html>
