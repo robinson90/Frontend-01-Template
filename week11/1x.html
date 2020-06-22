@@ -34,17 +34,18 @@
       this.compare = compare;
     }
     take(){
-      if(this.data.length) {
+      if(this.data.length === 0) {
         return;
       }
       let min = this.data[0];
       let minIndex = 0;
-      for(let i = 0; i < data.length; i ++) {
+      for(let i = 0; i < this.data.length; i ++) {
         if(this.compare(this.data[i], min) < 0) {
           min = this.data[i];
           minIndex = i;
         }
       }
+      // 将数组最后一个替换最小值
       this.data[minIndex] = this.data[this.data.length - 1]
       this.data.pop();
       return min;
@@ -97,37 +98,63 @@
   document.addEventListener('contextmenu', e => e.preventDefault())
 
   async function findPath(map, start, end) {
+    // 对起始点、终点进行检查
+    if (map[100 * start[1] + start[0]] === 1 || map[100 * end[1] + end[0]] === 1) {
+      return null;
+    }
+    container.children[100 * start[1] + start[0]].style.backgroundColor = 'blue'
+    container.children[100 * end[1] + end[0]].style.backgroundColor = 'red'
     map = map.slice();
-    let queue = [start];
-    // let queue = new Sorted()
 
-    function distance([x, y]) {
-      return ((x - end[0]) ** 2 + (y - end[1]) ** 2)
+    function diatance([x, y]) {
+      return (x - end[0]) ** 2 + (y - end[1]) ** 2
     }
 
-    // let conllection = insert()
+    // let queue = [start];
+    let collection = new Sorted([start], (a, b) => diatance(a) - diatance(b))
+
+    function distance([x, y]) {
+      console.log(x, y)
+      return ((x - end[0]) ** 2 + (y - end[1]) ** 2)
+    }
   
     async function insert([x, y], pre) {
+      // 障碍物
       if(map[100 * y + x] !== 0) {
         return;
       }
+      // 边界 
       if (x < 0 || y < 0 || x >= 100 || y >= 100) {
         return;
       }
+      // 已经走过的cell，让它不为0，下次不再走
       map[100 * y + x] = pre;
-      container.children[100 * y + x].style.backgroundColor = 'lightgreen'
+      if (!(x === start[0] && y === start[1]) && !(x === end[0] && y === end[1])) {
+        container.children[100 * y + x].style.backgroundColor = 'lightgreen'
+      }
       await sleep(5)
-      queue.push([x, y])
+      // queue.push([x, y])
+      collection.insert([x, y])
     }
 
 
-    while(queue.length) {
-      let [x, y] = queue.shift()
+    // queue.length
+    while(collection.length) {
+      // 深度优先 
+      // let [x, y] = queue.pop()
+
+      // let [x, y] = queue.shift()
+      let [x, y] = collection.take()
+      if (x === start[0] && y === start[1]) {
+        map[100 * y + x] = 'start';
+      }
       if (x === end[0] && y === end[1]) {
         let path = []
         while(x !== start[0] || y !== start[1]) {
           path.push([x, y])
-          container.children[y * 100 + x].style.backgroundColor = 'pink';
+          if (!x === end[0] && y === end[1]) {
+            container.children[y * 100 + x].style.backgroundColor = 'pink';
+          }
           [x, y] = map[y * 100 + x]
         }
         return path;
@@ -137,13 +164,23 @@
       await insert([x, y - 1], [x, y])
       await insert([x, y + 1], [x, y])
 
-      await insert([x + 1, y + 1], [x, y])
-      await insert([x - 1, y + 1], [x, y])
-      await insert([x + 1, y - 1], [x, y])
-      await insert([x - 1, y - 1], [x, y])
+      // 斜线 
+      if (map[(y + 1) * 100 + x] !== 1 || map[y * 100 + x + 1] !== 1) {
+        await insert([x + 1, y + 1], [x, y])
+      }
+      if (map[(y + 1) * 100 + x] !== 1 || map[y * 100 + x - 1] !== 1) {
+        await insert([x - 1, y + 1], [x, y])
+      }
+      if (map[(y - 1) * 100 + x] !== 1 || map[y * 100 + x + 1] !== 1) {
+        await insert([x + 1, y - 1], [x, y])
+      }
+      if (map[(y - 1) * 100 + x] !== 1 || map[y * 100 + x - 1] !== 1) {
+        await insert([x - 1, y - 1], [x, y])
+      }
     }
     return null;
   }
+  // findPath(map,[25,25],[50,35])
 </script>
 </body>
 </html>
