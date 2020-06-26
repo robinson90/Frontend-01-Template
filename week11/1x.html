@@ -173,6 +173,8 @@
     }
   
     async function insert([x, y], pre) {
+
+      // 什么时候不应该return？路线累加？
       // 障碍物
       if(map[100 * y + x] !== 0) {
         return;
