@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  kmp
+</body>
+<script>
+  // function find(source, pattern) {
+  //   for(let i = 0; i < source.length; i++) {
+  //     let matched = true;
+  //     for (let p = 0; p < pattern.length; p++) {
+  //       if (source[i + p] !== pattern[p]) {
+  //         matched = false;
+  //         break;
+  //       }
+  //     }
+  //     if (matched) {
+  //       return true;
+  //     }
+  //   }
+  //   return false;
+  // }
+
+
+  function find(source, pattern) {
+    const table = new Array(pattern.length).fill(0);
+    let k = 0;
+    for (let p = 1; p < pattern.length; p++) {
+      if (pattern[p] === pattern[k]) {
+        k ++;
+      } else {
+        k = 0;
+      }
+      table[p] = k;
+    }
+    console.log(table)
+
+    let p = 0;
+    for(let i = 0; i < source.length; i++) {
+      console.log(source[i], pattern[p], p)
+      if (source[i] === pattern[p]){
+        p ++;
+      } else {
+        // p = table[p - 1];
+        // if (source[i] = pattern[p]) {
+        //   p ++;
+        // } else {
+        //   p = 0;
+        // }
+        while (source[i] !== pattern[p] && p > 0) {
+          p = table[p - 1];
+        }
+        if (source[i] = pattern[p]) {
+          p ++;
+        } else {
+          p = 0;
+        }
+      }
+    }
+    // console.log(p)
+    if (p === pattern.length) {
+      return true;
+    }
+    return false;
+  }
+  find('aaaaaaaaaaaaaaaaaaaaax', 'aaax')
+  find('abcabcabcabcd', 'abcabcabcd')
+  find('abcabcabcabcabcabcd', 'abcdabcabcd')
+</script>
+</html>

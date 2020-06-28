@@ -6,12 +6,12 @@
   <title>Document</title>
 </head>
 <body>
-  
+  ll
 </body>
 <script>
   var reg = /([0-9\.]+)|([ ]+)|([\r\n]+)|(\+)|(\-)|(\*)|(\/)/g
   var dictionary = ['Number', 'Whitespace', 'LineTerminator', '+', '-', '*', '/'];
-  function * tokensize(source) {
+  function * tokenize(source) {
     var result = null;
     var lastIndex = 0;
 
@@ -31,19 +31,19 @@
         val: '',
       }
 
-      for(let i = 0; i < dictionary.length;i ++) {
+      for(let i = 0; i <= dictionary.length;i ++) {
         if (result[i + 1]) {
-          tocken.type = (dictionary[i]);
+          tocken.type = dictionary[i];
         }
       }
-      tocken.val = (result[0])
+      tocken.val = result[0]
       yield tocken;
     } while(result)
 
-    yield('EOF')
+    yield({ type: 'EOF'})
   }
   function Expression(source) {
-    if (source[0].type === 'AdditiveExpression' && source[1] === 'EOF') {
+    if (source[0].type === 'AdditiveExpression' && source[1].type === 'EOF') {
       let node = {
         type: 'Expression',
         children: [source.shift(), source.shift()]
@@ -57,6 +57,7 @@
   function AdditiveExpression(source){
     if (source[0].type === 'Number') {
       MultiplicationExpression(source)
+      return AdditiveExpression(source)
     }
     if (source[0].type === 'MultiplicationExpression') {
       let node = {
@@ -125,7 +126,7 @@
     }
   }
   let source = [];
-  for (let tocken of tokensize("1024 * 2 * 4 + 10 * 25")) {
+  for (let tocken of tokenize("1024 * 2 * 4 + 10 * 25")) {
     console.log(tocken)
     if (tocken.type !== 'Whitespace' && tocken.type !== 'LineTerminator') {
       source.push(tocken)

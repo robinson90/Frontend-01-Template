@@ -26,3 +26,5 @@
 * basic profiles：基本的配置文件
 * circular：循环的
 * recursive：递归的
+
+* proposals: 提案
