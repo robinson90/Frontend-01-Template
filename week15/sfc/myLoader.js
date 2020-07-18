@@ -10,7 +10,7 @@ module.exports = function(source, map) {
   let script = null;
   for(let node of tree.children) {
     if(node.tagName === 'template') {
-      template = node;
+      template = node.children.filter(v => v.type !== 'text')[0];
     }
     if (node.tagName === 'script') {
       script = node.children[0].content;
@@ -21,22 +21,28 @@ module.exports = function(source, map) {
     if (node.type === 'text') {
       return JSON.stringify(node.content);
     }
-    for(let i = 0; i < node.children.length; i++) {
-      let attrs = {};
-      for(let attr of node.attributes) {
-        if(!['type', 'tagName'].includes(attr.name)) {
-          attrs[attr.name] = attr.value;
-        }
+    let attrs = {};
+    for(let attr of node.attributes) {
+      if(!['type', 'tagName', 'isselfclosing'].includes(attr.name)) {
+        attrs[attr.name] = attr.value;
       }
-      let children = node.children.map(node => visit(node))
-      return `create("${node.tagName}", ${JSON.stringify(attrs)}, ${children})`
     }
+    let children = node.children.map(node => visit(node))
+    return `create("${node.tagName}", ${JSON.stringify(attrs)}, ${children})`
   }
   const r = `
 import {create, Wrapper, Text} from './creatElement.js'
 export class ${className} {
+  constructor(){
+    this.children = [];
+    this.root = document.createElement('div')
+  }
+  setAttribute(name, val) {
+    console.log(name, val)
+    this.root.setAttribute(name, val)
+  }
   mountTo(parent){
-    parent.appendChild(this.root);
+    this.render().mountTo(parent);
   }
   render() {
     return ${visit(template)}

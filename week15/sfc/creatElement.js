@@ -10,7 +10,8 @@ export function create(Cls, attributes, ...children){
       });
   }
   for(let name in attributes) {
-      o.setAttribute(name, attributes[name]);
+    console.log(o)
+    o.setAttribute(name, attributes[name]);
   }
 
   let visit = function (children) {
