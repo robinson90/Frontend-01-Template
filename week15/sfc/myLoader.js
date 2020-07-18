@@ -18,12 +18,13 @@ module.exports = function(source, map) {
   }
 
   const visit = (node) => {
+    console.log(node)
     if (node.type === 'text') {
       return JSON.stringify(node.content);
     }
     let attrs = {};
     for(let attr of node.attributes) {
-      if(!['type', 'tagName', 'isselfclosing'].includes(attr.name)) {
+      if(!['type', 'tagName', 'isSelfClosing'].includes(attr.name)) {
         attrs[attr.name] = attr.value;
       }
     }

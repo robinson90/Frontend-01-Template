@@ -10,7 +10,6 @@ export function create(Cls, attributes, ...children){
       });
   }
   for(let name in attributes) {
-    console.log(o)
     o.setAttribute(name, attributes[name]);
   }
 
@@ -45,7 +44,6 @@ export class Wrapper{
   constructor(type){
       this.children = [];
       this.root = document.createElement(type);
-      console.log(this.root)
   }
 
   setAttribute(name, value) { //attribute
