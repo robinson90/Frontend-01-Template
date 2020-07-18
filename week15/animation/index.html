@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    #el{
+      width: 100px;
+      height: 100px;
+      background-color: powderblue;
+    }
+    #el2{
+      width: 100px;
+      height: 100px;
+      background-color: powderblue;
+      /* transition: transform linear 5s; */
+    }
+  </style>
+</head>
+
+<body>
+  <div id="el"></div>
+  <div id="el2"></div>
+  <button id="btn">暂停</button>
+  <button id="btn2">恢复 </button>
+  <button id="add-btn">add </button>
+</body>
+<script type="module">
+import { TimeLine, Animation } from './animation.js'
+const linear =  v => v;
+let el = document.getElementById('el');
+let el2 = document.getElementById('el2');
+let tl = new TimeLine();
+
+// object, property, template, start, end, duration, delay, timingFunction
+tl.add(new Animation(el.style, 'transform', v => `translateX(${v}px)`,0, 200, 50000, 0, linear))
+
+// el2.style.transform = 'translateX(200px)'
+tl.start()
+document.getElementById('btn').addEventListener('click', () => tl.pause())
+document.getElementById('btn2').addEventListener('click', () => tl.resume())
+document.getElementById('add-btn').addEventListener('click', () => {
+  tl.add(new Animation(el2.style, 'transform', v => `translateX(${v}px)`,0, 200, 50000, 0, linear), 0)
+})
+
+</script>
+</html>

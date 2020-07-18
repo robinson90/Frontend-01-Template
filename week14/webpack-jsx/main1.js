@@ -1,5 +1,5 @@
 
-function create(Cls, attributes, ...children){
+export function create(Cls, attributes, ...children){
     
   let o;
 
@@ -31,7 +31,7 @@ function create(Cls, attributes, ...children){
   return o;
 }
 
-class Text {
+export class Text {
   constructor(text){
       this.children = [];
       this.root = document.createTextNode(text);
