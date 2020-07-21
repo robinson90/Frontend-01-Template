@@ -15,6 +15,7 @@
       height: 100px;
       background-color: powderblue;
       /* transition: transform linear 5s; */
+      /* transition: transform ease 5s; */
     }
   </style>
 </head>
@@ -28,6 +29,8 @@
 </body>
 <script type="module">
 import { TimeLine, Animation } from './animation.js'
+import { cubicBezier } from './cubicBezier.js'
+const ease = cubicBezier(.25,.1,.25,1)
 const linear =  v => v;
 let el = document.getElementById('el');
 let el2 = document.getElementById('el2');
@@ -40,9 +43,9 @@ tl.add(new Animation({
   template: v => `translateX(${v}px)`,
   start: 0,
   end: 200,
-  duration: 50000, 
+  duration: 5000, 
   delay: 0,
-  timingFunction: linear,
+  timingFunction: ease,
 }))
 
 // el2.style.transform = 'translateX(200px)'
@@ -56,10 +59,10 @@ document.getElementById('add-btn').addEventListener('click', () => {
     template: v => `translateX(${v}px)`,
     start: 0,
     end: 200,
-    duration: 50000, 
+    duration: 5000, 
     delay: 0,
-    timingFunction: linear,
-  }),0)
+    timingFunction: ease,
+  }))
 })
 
 </script>
