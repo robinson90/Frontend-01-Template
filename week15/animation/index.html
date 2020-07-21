@@ -34,14 +34,32 @@ let el2 = document.getElementById('el2');
 let tl = new TimeLine();
 
 // object, property, template, start, end, duration, delay, timingFunction
-tl.add(new Animation(el.style, 'transform', v => `translateX(${v}px)`,0, 200, 50000, 0, linear))
+tl.add(new Animation({
+  object: el.style,
+  property: 'transform',
+  template: v => `translateX(${v}px)`,
+  start: 0,
+  end: 200,
+  duration: 50000, 
+  delay: 0,
+  timingFunction: linear,
+}))
 
 // el2.style.transform = 'translateX(200px)'
 tl.start()
 document.getElementById('btn').addEventListener('click', () => tl.pause())
 document.getElementById('btn2').addEventListener('click', () => tl.resume())
 document.getElementById('add-btn').addEventListener('click', () => {
-  tl.add(new Animation(el2.style, 'transform', v => `translateX(${v}px)`,0, 200, 50000, 0, linear), 0)
+  tl.add(new Animation({
+    object: el2.style,
+    property: 'transform',
+    template: v => `translateX(${v}px)`,
+    start: 0,
+    end: 200,
+    duration: 50000, 
+    delay: 0,
+    timingFunction: linear,
+  }),0)
 })
 
 </script>

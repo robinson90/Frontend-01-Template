@@ -89,7 +89,7 @@ export class TimeLine {
 }
 
 export class Animation {
-  constructor(object, property, template, start, end, duration, delay, timingFunction) {
+  constructor({object, property, template, start, end, duration, delay, timingFunction}) {
     this.object = object;
     this.property = property;
     this.template = template;
