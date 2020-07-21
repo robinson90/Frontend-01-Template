@@ -76,7 +76,7 @@ class Carousel {
   constructor(){
     this.root = null;
     this.data = null;
-    thi.stl = new TimeLine();
+    this.tl = new TimeLine();
   }
 
   setAttribute(name, value) { //attribute
