@@ -77,8 +77,7 @@ export class TimeLine {
     console.log(this.startTime)
     this.tick();
   }
-  // 行为不一致。
-  // 点击暂停之后加入新的动画与运行中的动画加入新的动画
+  
   add(animation, addTime) {
     animation.finished = false;
     if (this.state === 'playing') {
@@ -86,7 +85,7 @@ export class TimeLine {
     } else if(this.state === 'init'){
       animation.addTime = addTime !== void 0 ? addTime : 0;
     } else {
-      // animation.addTime = addTime !== void 0 ? addTime : Date.now() - this.startTime;
+      animation.addTime = addTime !== void 0 ? addTime : Date.now() - this.pauseTime;
     }
     
     this.animations.push(animation)
