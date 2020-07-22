@@ -50,8 +50,10 @@ export class TimeLine {
     if (this.state !== 'playing') {
       this.pause();
     }
-    
-    this.animations = [];
+    this.animations.forEach(animation => {
+      animation.finished = false
+    })
+    console.log(this.animations)
     this.id = null;
     this.state = 'init';
     this.startTime = Date.now();
@@ -77,7 +79,7 @@ export class TimeLine {
     console.log(this.startTime)
     this.tick();
   }
-  
+
   add(animation, addTime) {
     animation.finished = false;
     if (this.state === 'playing') {

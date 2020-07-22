@@ -26,6 +26,7 @@
   <button id="btn">暂停</button>
   <button id="btn2">恢复 </button>
   <button id="add-btn">add </button>
+  <button id="restart-btn">restart</button>
 </body>
 <script type="module">
 import { TimeLine, Animation } from './animation.js'
@@ -64,6 +65,7 @@ document.getElementById('add-btn').addEventListener('click', () => {
     timingFunction: ease,
   }), 0)
 })
+document.getElementById('restart-btn').addEventListener('click', () => tl.reStart())
 
 </script>
 </html>
