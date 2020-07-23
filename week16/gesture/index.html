@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+</head>
+<body>
+  <div id="el" style="width: 100px;height: 100px;background-color: rebeccapurple; transform: translateX(0px);"></div>
+</body>
+<script src="gesture.js"></script>
+<script>
+  let ele = document.getElementById('el');
+  enableGesture(ele)
+  ele.addEventListener('tap', () => {
+  })
+  let x = 0, y = 0;
+  ele.addEventListener('panstart', (e) => {
+    console.log('panstart', e)
+  })
+  ele.addEventListener('pan', (e) => {
+    console.log(e)
+    let dx = e.clientX - e.startX;
+    let dy = e.clientY - e.startY;
+    ele.style.transform = `translate(${dx}px, ${dy}px)`
+  })
+  ele.addEventListener('panend', (e) => {
+    console.log(e)
+  })
+  ele.addEventListener('flick', (e) => {
+    console.log(e)
+  })
+</script>
+</html>
