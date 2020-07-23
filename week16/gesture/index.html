@@ -14,7 +14,7 @@
   enableGesture(ele)
   ele.addEventListener('tap', () => {
   })
-  let x = 0, y = 0;
+  let startX = 0, startY = 0;
   ele.addEventListener('panstart', (e) => {
     console.log('panstart', e)
   })
@@ -22,10 +22,14 @@
     console.log(e)
     let dx = e.clientX - e.startX;
     let dy = e.clientY - e.startY;
-    ele.style.transform = `translate(${dx}px, ${dy}px)`
+    ele.style.transform = `translate(${dx + startX}px, ${dy + startY}px)`;
   })
   ele.addEventListener('panend', (e) => {
-    console.log(e)
+    let dx = e.clientX - e.startX;
+    let dy = e.clientY - e.startY;
+    ele.style.transform = `translate(${dx + startX}px, ${dy + startY}px)`;
+    startX += dx, startY += dy;
+    console.log('panend', e)
   })
   ele.addEventListener('flick', (e) => {
     console.log(e)
