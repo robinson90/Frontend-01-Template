@@ -1,5 +1,4 @@
-
-function enableGesture(ele) {
+export function enableGesture(ele) {
   let contexts = Object.create(null);
   let MOUSE_SYMBOL = Symbol('mouse')
 
@@ -80,9 +79,6 @@ function enableGesture(ele) {
     let dx = e.clientX - context.startX;
     let dy = e.clientY - context.startY;
     if (dx ** 2 + dy ** 2 > 100 && !context.isPan) {
-      if (context.isPress) {
-        ele.dispatchEvent(new CustomEvent('presscancel'))
-      }
       context.isTap = false;
       context.isPan = true;
       context.isPress = true;
@@ -146,14 +142,12 @@ function enableGesture(ele) {
       ele.dispatchEvent(new CustomEvent('tap'))
     }
     clearTimeout(context.timeoutHandler)
-    console.log('end', context)
+    ele.dispatchEvent(new CustomEvent('end'))
   }
 
   let cancel = (e, context) => {
     clearTimeout(context.timeoutHandler)
-    console.log('cancel')
+    ele.dispatchEvent(new CustomEvent('cancel'))
   }
 }
-
-
 

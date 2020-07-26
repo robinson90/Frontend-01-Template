@@ -10,6 +10,11 @@
 </body>
 <script src="gesture.js"></script>
 <script>
+  window.addEventListener('contextmenu', e => e.preventDefault())
+  document.addEventListener('selectstart', e => e.preventDefault())
+  document.addEventListener('touchmove', e => e.preventDefault(),{passive: false})
+</script>
+<script>
   let ele = document.getElementById('el');
   enableGesture(ele)
   ele.addEventListener('tap', () => {
