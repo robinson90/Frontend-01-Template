@@ -1,5 +1,5 @@
-import { TimeLine, Animation } from '../animation.js'
-import { cubicBezier } from '../cubicBezier.js'
+import { TimeLine, Animation } from '../lib/animation.js'
+import { cubicBezier } from '../lib/cubicBezier.js'
 import { create } from '../main1'
 
 const ease = cubicBezier(.25,.1,.25,1)
@@ -10,6 +10,7 @@ export class Carousel {
     this.root = null;
     this.data = null;
     this.tl = new TimeLine();
+    window.xtl = this.tl;
   }
 
   setAttribute(name, value) { //attribute
@@ -40,12 +41,12 @@ export class Carousel {
       }
 
       const onPanend = e => {
-        nextPickStopHander = setTimeout(nextPic, 3000)
+        // nextPickStopHander = setTimeout(nextPic, 3000)
         console.log('onPanend')
       }
 
       const onEnd = () => {
-        nextPickStopHander = setTimeout(nextPic, 3000)
+        // nextPickStopHander = setTimeout(nextPic, 3000)
       }
 
       let ele = <img src={url} onStart={onStart} onPan={onPan} onPanend={onPanend} onEnd={onEnd} enableGesture={true} />;
@@ -101,7 +102,9 @@ export class Carousel {
         //   next.style.transform = `translateX(${-100 * nextPosition}%)`;
         //   position = nextPosition;
         // }, 16)
-        nextPickStopHander = setTimeout(nextPic, 3000)
+        // nextPickStopHander = setTimeout(nextPic, 3000)
+
+        // window.xStopHander = setTimeout(nextPic, 3000)
       }
       nextPic()
     return (

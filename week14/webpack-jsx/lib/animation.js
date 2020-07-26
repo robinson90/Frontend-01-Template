@@ -48,20 +48,7 @@ export class TimeLine {
     this.startTime = Date.now();
     this.tick();
   }
-  reStart() {
-    if (this.state !== 'playing') {
-      this.pause();
-    }
-    for (let animation of this.finishedAnimations) {
-      this.animations.add(animation)
-    }
-    this.finishedAnimations = new Set();
-    this.id = null;
-    this.startTime = Date.now();
-    this.pauseTime = null;
-    this.state = 'playing';
-    this.tick();
-  }
+
   reset(){
     if (this.state !== 'playing') {
       this.pause();
@@ -69,10 +56,27 @@ export class TimeLine {
     this.id = null;
     this.animations = new Set();
     this.finishedAnimations = new Set();
+    this.addTimes = new Map();
     this.startTime = Date.now();
     this.pauseTime = null;
     this.state = 'init';
   }
+
+  reStart() {
+    if (this.state !== 'playing') {
+      this.pause();
+    }
+    for (let animation of this.finishedAnimations) {
+      this.animations.add(animation)
+    }
+    this.id = null;
+    this.finishedAnimations = new Set();
+    this.startTime = Date.now();
+    this.pauseTime = null;
+    this.state = 'playing';
+    this.tick();
+  }
+  
   pause() {
     if (this.state !== 'playing') {
       return;
@@ -80,6 +84,7 @@ export class TimeLine {
     this.state = 'paused';
     if (this.id !== null) {
       cancelAnimationFrame(this.id)
+      this.id = null;
       this.pauseTime = Date.now();
     }
   }
@@ -104,8 +109,8 @@ export class TimeLine {
     
     this.animations.add(animation)
     console.log(this.animations)
-    if (this.id === null) {
-      requestAnimationFrame(() => this.tick())
+    if (this.state === 'playing' && this.id === null) {
+      this.tick();
     }
   }
 }

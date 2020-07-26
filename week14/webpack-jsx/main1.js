@@ -1,6 +1,6 @@
 
 import{ Carousel } from './component/Carousel'
-import { enableGesture } from './gesture';
+import { enableGesture } from './lib/gesture';
 
 export function create(Cls, attributes, ...children){
     
