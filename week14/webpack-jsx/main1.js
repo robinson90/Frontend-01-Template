@@ -54,7 +54,7 @@ class Wrapper{
   setAttribute(name, value) { //attribute
       this.root.setAttribute(name, value);
       if (name.match(/^on([\s\S]+)$/)) {
-        const eventName = RegExp.$1.replace(/[\s\S]/,v => v.toLocaleLowerCase())
+        const eventName = RegExp.$1.replace(/[\s\S]/,v => v.toLowerCase())
         this.addEventListener(eventName,value)
       }
       if (name === 'enableGesture') {

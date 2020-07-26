@@ -21,23 +21,27 @@ export function enableGesture(ele) {
   }
 
   ele.addEventListener('touchstart', e => {
+    // console.log('touchstart')
     for(let touch of e.changedTouches) {
       contexts[touch.identifier] = Object.create(null)
       start(touch, contexts[touch.identifier])
     }
   })
-  ele.addEventListener('touchmovet', e => {
+  ele.addEventListener('touchmove', e => {
+    // console.log('touchmove')
     for(let touch of e.changedTouches) {
       move(touch, contexts[touch.identifier])
     }
   })
-  ele.addEventListener('touchsend', e => {
+  ele.addEventListener('touchend', e => {
+    // console.log('touchend')
     for(let touch of e.changedTouches) {
       end(touch, contexts[touch.identifier])
       delete contexts[touch.identifier]
     }
   })
   ele.addEventListener('touchcancel', e => {
+    // console.log('touchcancel')
     for(let touch of e.changedTouches) {
       cancel(touch, contexts[touch.identifier])
       delete contexts[touch.identifier]
@@ -52,6 +56,16 @@ export function enableGesture(ele) {
   let start = (e, context) => {
     context.startX = e.clientX;
     context.startY = e.clientY;
+
+    const event = new CustomEvent('start');
+    Object.assign(event, {
+      startX: context.startX,
+      startY: context.startY,
+      clientX: e.clientX,
+      clientY: e.clientY,
+    })
+    ele.dispatchEvent(event)
+
     context.moves = [];
     context.isTap = true;
     context.isPan = false;
@@ -65,14 +79,6 @@ export function enableGesture(ele) {
       context.isPress = true;
       ele.dispatchEvent(new CustomEvent('pressstart'))
     }, 500)
-    const event = new CustomEvent('start');
-    Object.assign(event, {
-      startX: context.startX,
-      startY: context.startY,
-      clientX: e.clientX,
-      clientY: e.clientY,
-    })
-    ele.dispatchEvent(event)
   }
 
   let move = (e, context) => {

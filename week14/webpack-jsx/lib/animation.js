@@ -1,3 +1,5 @@
+// 触发器、开关 habet??
+
 export class TimeLine {
   constructor() {
     this.animations = new Set();
@@ -85,6 +87,7 @@ export class TimeLine {
     if (this.id !== null) {
       cancelAnimationFrame(this.id)
       this.id = null;
+      // 什么时候设置比较合理？ 
       this.pauseTime = Date.now();
     }
   }
