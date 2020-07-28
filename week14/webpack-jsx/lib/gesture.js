@@ -152,6 +152,7 @@ export function enableGesture(ele) {
   }
 
   let cancel = (e, context) => {
+    console.log('cancel')
     clearTimeout(context.timeoutHandler)
     ele.dispatchEvent(new CustomEvent('cancel'))
   }

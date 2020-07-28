@@ -58,9 +58,12 @@ export class Carousel {
       const onPanend = e => {
         let direction = 0;
         const dx = e.clientX - e.startX;
+        console.log(dx + offset)
         if (dx + offset > 250) {
+          // 向右
           direction = 1;
         } else if (dx + offset < -250) {
+          // 向左
           direction = -1;
         }
 
@@ -106,12 +109,13 @@ export class Carousel {
         this.tl.add(nextAnimation);
 
         position = (position - direction + this.data.length) % this.data.length;
-        nextPickStopHander = setTimeout(nextPic, 3000)
+        nextPic()
         console.log('onPanend')
       }
 
       const onCancel = () => {
-        nextPickStopHander = setTimeout(nextPic, 3000)
+        console.log('onCancel')
+        nextPic()
       }
 
       let ele = <img src={url} onStart={onStart} onPan={onPan} onPanend={onPanend} onCancel={onCancel} enableGesture={true} />;
@@ -146,6 +150,10 @@ export class Carousel {
         delay: 0,
         timingFunction: ease,
       })
+      // if (this.tl.animations.size) {
+      //   this.tl.reset();
+      //   this.tl.start();
+      // }
       this.tl.add(curAnimation)
       this.tl.add(nextAnimation)
       position = nextPosition;
