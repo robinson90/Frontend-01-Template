@@ -1,6 +1,6 @@
 import { TimeLine, Animation } from '../lib/animation.js'
 import { cubicBezier } from '../lib/cubicBezier.js'
-import { create } from '../main1'
+import { create } from '../create'
 import css from"./Carousel.css"
 
 console.log(css)

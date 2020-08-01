@@ -1,4 +1,4 @@
-import { create } from '../main1'
+import { create } from '../create'
 export class Panel {
   constructor(){
     this.root = null;

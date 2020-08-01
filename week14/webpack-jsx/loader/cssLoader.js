@@ -1,9 +1,8 @@
 let css = require('css')
 
 module.exports = function(source, map) {
-  console.log(css.parse(source))
   let styleSheet = css.parse(source);
-  let name = this.resourcePath.match(/([^/]+).css/)[1]
+  let name = this.resourcePath.match(/([^\\]+).css$/)[1].replace(/[\S]/, val => val.toLowerCase());
   console.log('name', name)
   for(let rule of styleSheet.stylesheet.rules) {
     rule.selectors = rule.selectors.map(val => val.match(new RegExp(`^.${name}`)) ? val : `.${name} ${val}`)

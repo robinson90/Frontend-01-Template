@@ -1,4 +1,4 @@
-import { create } from '../main1'
+import { create } from '../create'
 export class ListView {
   constructor(){
     this.root = null;
@@ -23,7 +23,7 @@ export class ListView {
   render(){
     let data = this.getAttribute('data')
     return (
-      <div class="tab-penel">
+      <div class="list-view" style="width: 300px">
         {data.map(this.children[0])}
       </div>
     )
