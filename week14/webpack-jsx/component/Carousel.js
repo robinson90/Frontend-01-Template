@@ -1,6 +1,9 @@
 import { TimeLine, Animation } from '../lib/animation.js'
 import { cubicBezier } from '../lib/cubicBezier.js'
 import { create } from '../main1'
+import css from"./Carousel.css"
+
+console.log(css)
 
 const ease = cubicBezier(.25,.1,.25,1)
 const linear =  v => v;
@@ -58,11 +61,11 @@ export class Carousel {
       const onPanend = e => {
         let direction = 0;
         const dx = e.clientX - e.startX;
-        console.log(dx + offset)
-        if (dx + offset > 250) {
+        console.log(dx + offset, e.isFlick)
+        if (dx + offset > 250 || dx > 0 && e.isFlick) {
           // 向右
           direction = 1;
-        } else if (dx + offset < -250) {
+        } else if (dx + offset < -250 || dx < 0 && e.isFlick) {
           // 向左
           direction = -1;
         }

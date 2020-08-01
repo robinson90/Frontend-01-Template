@@ -27,6 +27,19 @@ module.exports = {
             ]
           }
         }
+      },
+      // {
+      //   test:/\.css$/,
+      //   use: {
+      //     loader: 'css-loader',
+          
+      //   }
+      // },
+      {
+        test: /\.css$/,
+        use:{
+          loader: require.resolve('./loader/cssLoader.js'),
+        }
       }
     ]
   },
