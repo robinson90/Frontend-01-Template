@@ -1,0 +1,178 @@
+<style>
+   .cell {
+       display: inline-block;
+       width: 38px;
+       height: 38px;
+       background-color: gray;
+       border-bottom: solid 2px white;
+       border-right: solid 2px white;
+       vertical-align: middle;
+   }
+   #container {
+       width: 802px;
+       margin-top: 10px;
+       height: 802px;
+   }
+   .opt{
+       display: flex;
+       margin-top: 30px;
+       width: 802px;
+       justify-content: space-around;
+   }
+   .opt button{
+       width: 120px;
+       height: 50px;
+       line-height: 50px;
+   }
+   #result{
+       font-size: 30px;
+       text-align: center;
+       height: 20px;
+       line-height: 30px;
+       width: 802px;
+
+   }
+</style>
+<div id='result'>开始游戏吧</div>
+<div class="container" id="container"></div>
+<div class="opt">
+<button onclick="localStorage.map=JSON.stringify(map)" >保存</button>
+<button  id='start' >开始</button>
+<button    onclick='window.location.reload()'>刷新</button>
+<button onclick="localStorage.map=JSON.stringify(new Array(400).fill(0));window.location.reload()">清除</button>
+</div>
+
+
+<script>
+    document.getElementById('start').addEventListener('click',()=>{
+        
+        // const startX = parseInt(Math.random()*20) ;
+        // const startY = parseInt(Math.random()*20) ;
+        const startX = 0 ;
+        const startY = 0 ;
+        // const endX = parseInt(Math.random()*20) ;
+        // const endY = parseInt(Math.random()*20) ;
+        const endX = 19 ;
+
+        const endY = 19 ;
+        findPath(map,[startX,startY],[endX,endY])
+        
+       
+    })
+
+    function setText(text){
+        document.getElementById('result').innerText = text
+    }
+  
+   let map = localStorage.map
+       ? JSON.parse(localStorage.map)
+       : new Array(400).fill(0);
+
+   const container = document.getElementById("container");
+   let mouse = false,
+       clear = false;
+   for (let y = 0; y < 20; y++) {
+       for (let x = 0; x < 20; x++) {
+           const cell = document.createElement("div");
+           cell.classList.add("cell");
+           if (map[y * 20 + x] === 1) {
+               cell.style.backgroundColor = "black";
+           }
+
+           container.appendChild(cell);
+           cell.addEventListener("mouseover", () => {
+               if (mouse) {
+                   if (clear) {
+                       cell.style.backgroundColor = "";
+                       map[y * 20 + x] = 0;
+                   } else {
+                       cell.style.backgroundColor = "black";
+                       map[y * 20 + x] = 1;
+                   }
+               }
+           });
+       }
+   }
+
+   document.addEventListener("mousedown", (e) => {
+       mouse = true;
+       clear = e.which === 3;
+   });
+   document.addEventListener("contextmenu", (e) => {
+       e.preventDefault();
+   });
+   document.addEventListener("mouseup", (e) => {
+       mouse = false;
+   });
+
+   function sleep(t) {
+       return new Promise((resolve) => {
+           setTimeout(() => {
+               resolve();
+           }, t);
+       });
+   }
+
+   async function findPath(map, start, end) {
+       setText('找路中。。。。。')
+       container.children[start[1] * 20 + start[0]].style.backgroundColor =
+           "red";
+       container.children[end[1] * 20 + end[0]].style.backgroundColor = "red";
+       const queue = [start];
+       map = map.slice();
+       async function insert([x, y], pre) {
+           //  只插入未找过的节点
+           if (map[y * 20 + x] !== 0) {
+               return;
+           }
+           if (x < 0 || y < 0 || x >= 20 || y >= 20) {
+               return;
+           }
+           await sleep(10)
+           if ((x === start[0] && y === start[1]) || (x === end[0] && y === end[1])) {
+               console.log(true)
+           } else {
+               container.children[y * 20 + x].style.backgroundColor =
+                   "yellow";
+           }
+
+           map[y * 20 + x] = pre;
+           queue.push([x, y]);
+       }
+       while (queue.length) {
+           let [x, y] = queue.shift();
+           if (x === end[0] && y === end[1]) {
+               let path = [];
+               setText('已找到地图！！！')
+               while (x !== start[0] || y !== start[1]) {
+                   path.push([x, y]);
+                   if((x === start[x] && y === start[y])||(x === end[0] && y === end[1]) ){
+                   }else{
+                       setText('走出迷宫中。。。')
+                     await sleep(300)  
+                    container.children[y * 20 + x].style.backgroundColor =
+                       "blue";
+                   }
+                   [x, y] = map[y * 20 + x];
+               }
+               setText('恭喜你找到回家的路')
+               return path;
+           }
+
+           //  周边的8个点
+
+           await insert([x - 1, y], [x, y]);
+           await insert([x, y - 1], [x, y]);
+           await insert([x + 1, y], [x, y]);
+           await insert([x, y + 1], [x, y]);
+
+           await insert([x - 1, y - 1], [x, y]);
+           await insert([x + 1, y - 1], [x, y]);
+           await insert([x - 1, y + 1], [x, y]);
+           await insert([x + 1, y + 1], [x, y]);
+       }
+       setText('没有找到路')
+       return null;
+   }
+   //  findPath(map,[0,0],[8,49])
+</script>
