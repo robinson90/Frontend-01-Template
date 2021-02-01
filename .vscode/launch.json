@@ -4,11 +4,21 @@
   // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
   "version": "0.2.0",
   "configurations": [
+    
     {
       "type": "node",
       "request": "launch",
       "name": "Launch abababx",
-      "program": "${workspaceFolder}/week06/work/abababx.js",
+      "program": "${workspaceFolder}/week06/match.js",
+      "skipFiles": [
+        "<node_internals>/**"
+      ]
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch match2",
+      "program": "${workspaceFolder}/week06/match2.js",
       "skipFiles": [
         "<node_internals>/**"
       ]
