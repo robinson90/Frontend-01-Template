@@ -1,0 +1,125 @@
+<style>
+   .cell {
+       display: inline-block;
+       width: 6px;
+       height: 6px;
+       background-color: gray;
+       border-bottom: solid 1px white;
+       border-right: solid 1px white;
+       vertical-align: middle;
+   }
+   #container {
+       width: 701px;
+   }
+</style>
+
+<div class="container" id="container"></div>
+<button onclick="localStorage.map=JSON.stringify(map)">save</button>
+
+<script>
+   let map = localStorage.map
+       ? JSON.parse(localStorage.map)
+       : new Array(10000).fill(0);
+
+   const container = document.getElementById("container");
+   let mouse = false,
+       clear = false;
+   for (let y = 0; y < 100; y++) {
+       for (let x = 0; x < 100; x++) {
+           const cell = document.createElement("div");
+           cell.classList.add("cell");
+           if (map[y * 100 + x] === 1) {
+               cell.style.backgroundColor = "black";
+           }
+
+           container.appendChild(cell);
+           cell.addEventListener("mouseover", () => {
+               if (mouse) {
+                   if (clear) {
+                       cell.style.backgroundColor = "";
+                       map[y * 100 + x] = 0;
+                   } else {
+                       cell.style.backgroundColor = "black";
+                       map[y * 100 + x] = 1;
+                   }
+               }
+           });
+       }
+   }
+
+   document.addEventListener("mousedown", (e) => {
+       mouse = true;
+       clear = e.which === 3;
+   });
+   document.addEventListener("contextmenu", (e) => {
+       e.preventDefault();
+   });
+   document.addEventListener("mouseup", (e) => {
+       mouse = false;
+   });
+
+   function sleep(t) {
+       return new Promise((resolve) => {
+           setTimeout(() => {
+               resolve();
+           }, t);
+       });
+   }
+
+   async function findPath(map, start, end) {
+       container.children[start[1] * 100 + start[0]].style.backgroundColor =
+           "red!important";
+       container.children[end[1] * 100 + end[0]].style.backgroundColor = "red";
+       const queue = [start];
+       map = map.slice();
+       async function insert([x, y], pre) {
+           //  只插入未找过的节点
+           if (map[y * 100 + x] !== 0) {
+               return;
+           }
+           if (x < 0 || y < 0 || x >= 100 || y >= 100) {
+               return;
+           }
+           await sleep(0.0001)
+           if (x === start[x] && y === start[y]) {
+           } else {
+               container.children[y * 100 + x].style.backgroundColor =
+                   "yellow";
+           }
+
+           map[y * 100 + x] = pre;
+           queue.push([x, y]);
+       }
+       while (queue.length) {
+           let [x, y] = queue.shift();
+           if (x === end[0] && y === end[1]) {
+               let path = [];
+
+               while (x !== start[0] || y !== start[1]) {
+                   path.push([x, y]);
+                   if((x === start[x] && y === start[y])||(x === end[0] && y === end[1]) ){
+                   }else{
+                    container.children[y * 100 + x].style.backgroundColor =
+                       "blue";
+                   }
+                   [x, y] = map[y * 100 + x];
+               }
+               return path;
+           }
+
+           //  周边的8个点
+
+           await insert([x - 1, y], [x, y]);
+           await insert([x, y - 1], [x, y]);
+           await insert([x + 1, y], [x, y]);
+           await insert([x, y + 1], [x, y]);
+
+           await insert([x - 1, y - 1], [x, y]);
+           await insert([x + 1, y - 1], [x, y]);
+           await insert([x - 1, y + 1], [x, y]);
+           await insert([x + 1, y + 1], [x, y]);
+       }
+       return null;
+   }
+   //  findPath(map,[0,0],[8,49])
+</script>
