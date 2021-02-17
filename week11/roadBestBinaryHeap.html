@@ -1,0 +1,260 @@
+<style>
+   .cell {
+       display: inline-block;
+       width: 38px;
+       height: 38px;
+       background-color: gray;
+       border-bottom: solid 2px white;
+       border-right: solid 2px white;
+       vertical-align: middle;
+   }
+   #container {
+       width: 802px;
+       margin-top: 10px;
+       height: 802px;
+   }
+   .opt{
+       display: flex;
+       margin-top: 30px;
+       width: 802px;
+       justify-content: space-around;
+   }
+   .opt button{
+       width: 120px;
+       height: 50px;
+       line-height: 50px;
+   }
+   #result{
+       font-size: 30px;
+       text-align: center;
+       height: 20px;
+       line-height: 30px;
+       width: 802px;
+
+   }
+</style>
+<div id='result'>开始游戏吧</div>
+<div class="container" id="container"></div>
+<div class="opt">
+<button onclick="localStorage.map=JSON.stringify(map)" >保存</button>
+<button  id='start' >开始</button>
+<button    onclick='window.location.reload()'>刷新</button>
+<button onclick="localStorage.map=JSON.stringify(new Array(400).fill(0));window.location.reload()">清除</button>
+</div>
+
+
+<script>
+    // 二叉堆
+    class BinaryHeap{
+        constructor(data,compare){
+            this.data = data 
+            this.compare = compare
+
+        }
+        take(){
+            if(!this.data.length){
+                return 
+            }
+            let min = this.data[0]
+            let i = 0 
+            // 修补空洞 左右节点中较小的哪个移动
+           while(i<this.data.length){
+            //    not have left leaf
+               if(i * 2 + 1 >= this.data.length){
+                   break ;
+               }
+            //    not have right lead 
+               if(i * 2 + 2 >= this.data.length){
+                   // set to 左节点 跳出循环
+                   this.data[i] = this.data[i * 2 + 1 ]
+                   i = i * 2 + 1 
+                   break ;
+               }
+             // 左右同时存在 比较大小 如果左更小 使用左节点 
+               if(this.compare(this.data[i*2+1],this.data[i*2+2])<0){
+                   this.data[i] = this.data[i * 2 + 1] ;
+                    i = i * 2 + 1  ;
+               }else{
+                    // 使用右边节点
+                this.data[i] = this.data[i * 2 + 2] ;
+                  i = i * 2 + 2  ;
+               }
+           }
+           // 修补空洞节点 进行最后一次移动时，就是把指定元素插入的操作；如果刚好是最后一个，那么只删除 不增加元素
+
+           if(i<this.data.length - 1 ){
+            this.insertAt(i,this.data.pop())
+           }else{
+            this.data.pop()
+           }
+           return min 
+        }
+        insertAt(i,v){
+            console.log('insert item',v)
+            this.data[i] = v ;
+            console.log('data',this.data)
+            // 与父节点比较是否需要交换 假设是小顶堆
+            while(i > 0 && this.compare(v,this.data[Math.floor((i-1)/2)]) < 0 ){
+                this.data[i] = this.data[Math.floor((i-1)/2)]
+                this.data[Math.floor((i-1)/2)] = v 
+                i = Math.floor((i-1)/2)
+            }
+        }
+        insert(v){
+            this.insertAt(this.data.length,v)
+        }
+        get length(){
+            return this.data.length 
+        }
+    } 
+    let b = new BinaryHeap([],(a,b)=>a-b);
+    [0,2,1,7,9,6,8].forEach(item=>{
+        b.insert(item);
+    })
+    console.log(b.data);
+    [0,2,1,7,9,6,8].forEach(item=>{
+       let da =  b.take();
+
+       console.log('take da',da,b.data)
+    })
+    document.getElementById('start').addEventListener('click',()=>{
+        
+        // const startX = parseInt(Math.random()*20) ;
+        // const startY = parseInt(Math.random()*20) ;
+        const startX = 0 ;
+        const startY = 0 ;
+        // const endX = parseInt(Math.random()*20) ;
+        // const endY = parseInt(Math.random()*20) ;
+        const endX = 19 ;
+
+        const endY = 19 ;
+        findPath(map,[startX,startY],[endX,endY])
+        
+       
+    })
+
+    function setText(text){
+        document.getElementById('result').innerText = text
+    }
+  
+   let map = localStorage.map
+       ? JSON.parse(localStorage.map)
+       : new Array(400).fill(0);
+
+   const container = document.getElementById("container");
+   let mouse = false,
+       clear = false;
+   for (let y = 0; y < 20; y++) {
+       for (let x = 0; x < 20; x++) {
+           const cell = document.createElement("div");
+           cell.classList.add("cell");
+           if (map[y * 20 + x] === 1) {
+               cell.style.backgroundColor = "black";
+           }
+
+           container.appendChild(cell);
+           cell.addEventListener("mouseover", () => {
+               if (mouse) {
+                   if (clear) {
+                       cell.style.backgroundColor = "";
+                       map[y * 20 + x] = 0;
+                   } else {
+                       cell.style.backgroundColor = "black";
+                       map[y * 20 + x] = 1;
+                   }
+               }
+           });
+       }
+   }
+
+   document.addEventListener("mousedown", (e) => {
+       mouse = true;
+       clear = e.which === 3;
+   });
+   document.addEventListener("contextmenu", (e) => {
+    //    e.preventDefault();
+   });
+   document.addEventListener("mouseup", (e) => {
+       mouse = false;
+   });
+
+   function sleep(t) {
+       return new Promise((resolve) => {
+           setTimeout(() => {
+               resolve();
+           }, t);
+       });
+   }
+
+   async function findPath(map, start, end) {
+       setText('找路中。。。。。')
+       container.children[start[1] * 20 + start[0]].style.backgroundColor =
+           "red";
+       container.children[end[1] * 20 + end[0]].style.backgroundColor = "red";
+       const queue = [start];
+       function distance(point){
+           
+           return (point[0]-end[0]) ** 2 + (point[1]-end[1]) ** 2
+       }
+       let collection = new BinaryHeap([],(a,b)=>distance(a) - distance(b))
+       collection.insert(start)
+       map = map.slice();
+       async function insert([x, y], pre) {
+           //  只插入未找过的节点
+           if (map[y * 20 + x] !== 0) {
+               return;
+           }
+           if (x < 0 || y < 0 || x >= 20 || y >= 20) {
+               return;
+           }
+        //    await sleep(1500)
+           if ((x === start[0] && y === start[1]) || (x === end[0] && y === end[1])) {
+               console.log(true)
+           } else {
+               container.children[y * 20 + x].style.backgroundColor =
+                   "yellow";
+           }
+
+           map[y * 20 + x] = pre;
+           await sleep(3)
+        //    queue.push([x, y]);
+           collection.insert([x, y]);
+       }
+       while (queue.length) {
+        //    let [x, y] = queue.shift();
+           let [x, y] = collection.take();
+           if (x === end[0] && y === end[1]) {
+               let path = [];
+               setText('已找到地图！！！')
+               while (x !== start[0] || y !== start[1]) {
+                   path.push([x, y]);
+                   if((x === start[x] && y === start[y])||(x === end[0] && y === end[1]) ){
+                   }else{
+                       setText('走出迷宫中。。。')
+                     await sleep(300)  
+                    container.children[y * 20 + x].style.backgroundColor =
+                       "blue";
+                   }
+                   [x, y] = map[y * 20 + x];
+               }
+               setText('恭喜你找到回家的路')
+               return path;
+           }
+
+           //  周边的8个点
+
+           await insert([x - 1, y], [x, y]);
+           await insert([x, y - 1], [x, y]);
+           await insert([x + 1, y], [x, y]);
+           await insert([x, y + 1], [x, y]);
+
+           await insert([x - 1, y - 1], [x, y]);
+           await insert([x + 1, y - 1], [x, y]);
+           await insert([x - 1, y + 1], [x, y]);
+           await insert([x + 1, y + 1], [x, y]);
+       }
+       setText('没有找到路')
+       return null;
+   }
+   //  findPath(map,[0,0],[8,49])
+</script>

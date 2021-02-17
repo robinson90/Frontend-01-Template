@@ -70,28 +70,35 @@
       let min = this.data[0];
 
       let i = 0;
+      // 修补空洞 左右节点中较小的哪个移动
       while (i < this.data.length) {
+        // 没有左 不做 
         if (i * 2 + 1 >= this.data.length) {
           break;
         }
+        // 没有右 尝试左节点 
         if (i * 2 + 2 >= this.data.length) {
           this.data[i] = this.data[i * 2 + 1]
           i = i * 2 + 1;
           break;
         }
+        // 左右同时存在 比较大小 如果左更小 使用左节点 
         if(this.compare(this.data[i * 2 + 1], this.data[i * 2 + 2]) < 0) {
           this.data[i] = this.data[i * 2 + 1]
           i = i * 2 + 1;
         } else {
+          // 使用右边节点
           this.data[i] = this.data[i * 2 + 2];
           i = i * 2 + 2;
         }
       }
+      // 修补空洞节点 进行最后一次移动时，就是把指定元素插入的操作；如果刚好是最后一个，那么只删除 不增加元素
       if (i < this.data.length - 1) {
         this.insertAt(i, this.data.pop())
       } else {
-        this.data.pop()
+        this.data.pop();
       }
+
       return min;
     }
     insertAt(i, v) {
