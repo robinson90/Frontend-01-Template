@@ -107,16 +107,17 @@
             return this.data.length 
         }
     } 
-    let b = new BinaryHeap([],(a,b)=>a-b);
-    [0,2,1,7,9,6,8].forEach(item=>{
-        b.insert(item);
-    })
-    console.log(b.data);
-    [0,2,1,7,9,6,8].forEach(item=>{
-       let da =  b.take();
+    // test code 
+    // let b = new BinaryHeap([],(a,b)=>a-b);
+    // [0,2,1,7,9,6,8].forEach(item=>{
+    //     b.insert(item);
+    // })
+    // console.log(b.data);
+    // [0,2,1,7,9,6,8].forEach(item=>{
+    //    let da =  b.take();
 
-       console.log('take da',da,b.data)
-    })
+    //    console.log('take da',da,b.data)
+    // })
     document.getElementById('start').addEventListener('click',()=>{
         
         // const startX = parseInt(Math.random()*20) ;
